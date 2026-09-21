@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">پالپ</string>
+    <!-- ⚠️ آدرس سایت خودتان را اینجا بنویسید (با / در انتها). http و https هر دو پشتیبانی می‌شوند؛ آدرس IP هم قابل قبول است. برنامه همین آدرس را نمایش می‌دهد. -->
+    <string name="site_url" translatable="false">http://pulpmsg.localip.ir/</string>
+</resources>

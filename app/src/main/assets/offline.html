@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2aab5f">
+<title>پالپ | بدون اتصال</title>
+<style>
+  body{margin:0;min-height:100vh;display:grid;place-items:center;background:linear-gradient(160deg,#d8f3e3,#fff);font-family:'Vazirmatn',Tahoma,sans-serif;color:#14211a;text-align:center;padding:24px}
+  img{width:96px;height:96px}
+  h1{color:#2aab5f;margin:8px 0 4px}
+  p{color:#7b8c82;margin:0 0 20px}
+  button{background:#2aab5f;color:#fff;border:0;border-radius:12px;height:46px;padding:0 26px;font:inherit;cursor:pointer}
+</style>
+</head>
+<body>
+  <div>
+    <img src="" style="display:none" alt="">
+    <h1>پالپ</h1>
+    <p>اتصال به اینترنت برقرار نیست. بعد از وصل شدن دوباره تلاش کنید.</p>
+    <button onclick="if(window.PulpApp){PulpApp.reload()}else{location.reload()}">تلاش دوباره</button>
+  </div>
+</body>
+</html>
