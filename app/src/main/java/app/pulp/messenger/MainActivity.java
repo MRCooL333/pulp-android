@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -45,6 +46,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         siteUrl = getString(R.string.site_url);
         siteHost = Uri.parse(siteUrl).getHost();
+
+        // فقط در نسخه‌ی debug: امکان دیدن خطاها و Console از طریق chrome://inspect روی کامپیوتر
+        if ((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
 
         web = new WebView(this);
         setContentView(web, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -107,7 +113,21 @@ public class MainActivity extends Activity {
             if (fileCallback != null) fileCallback.onReceiveValue(null);
             fileCallback = callback;
             try {
-                startActivityForResult(params.createIntent(), REQ_FILE);
+                // عمداً از params.createIntent() استفاده نمی‌کنیم: وقتی accept روی image/video باشد،
+                // آن متد گزینشگر جدید عکس اندروید (Photo Picker) را باز می‌کند که در بسیاری از دستگاه‌ها
+                // یک باگ شناخته‌شده دارد؛ فایل انتخاب می‌شود ولی هرگز به صفحه برنمی‌گردد.
+                // به‌جایش گزینشگر کلاسیک اسناد را با ACTION_GET_CONTENT خودمان می‌سازیم که این باگ را ندارد.
+                String[] mimeTypes = params.getAcceptTypes();
+                boolean hasTypes = mimeTypes != null && mimeTypes.length > 0 && mimeTypes[0] != null && mimeTypes[0].length() > 0;
+
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType(hasTypes ? mimeTypes[0] : "*/*");
+                if (hasTypes && mimeTypes.length > 1) {
+                    intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+                }
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, params.getMode() == FileChooserParams.MODE_OPEN_MULTIPLE);
+                startActivityForResult(Intent.createChooser(intent, null), REQ_FILE);
             } catch (Exception e) {
                 fileCallback = null;
                 return false;
