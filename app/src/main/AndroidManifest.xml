@@ -8,6 +8,11 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
+    <!-- اندروید ۱۳ به بالا: نمایش نوتیفیکیشن پیام‌ها فقط با اجازه‌ی صریح کاربر -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- برای گزینه‌ی «پیام به مخاطبین»: فقط با درخواست و اجازه‌ی کاربر خوانده می‌شود -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:allowBackup="false"
         android:hardwareAccelerated="true"
